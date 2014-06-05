@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="quit">images/Button-Close-icon-64.png</file>
+        <file alias="later">images/Button-Log-Off-icon-64.png</file>
+        <file alias="later2">images/Button-Cancel-icon-64.png</file>
+        <file alias="restart">images/Button-Reload-icon-64.png</file>
+        <file alias="tray">images/Clock-icon-64.png</file>
+    </qresource>
+</RCC>
