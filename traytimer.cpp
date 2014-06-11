@@ -1,8 +1,8 @@
 #include "traytimer.h"
 #include <QTime>
 
-TrayTimer::TrayTimer(int interval, int postponeTime, QObject *parent) :
-    QTimer(parent),  mInterval(interval), mPostponeTime(postponeTime)
+TrayTimer::TrayTimer(int interval, int breakTime, int postponeTime, QObject *parent) :
+    QTimer(parent),  mInterval(interval), mBreakTime(breakTime), mPostponeTime(postponeTime)
 {
     qDebug() << "TrayTimer: Interval set:" << interval << ", postpone time:" << postponeTime;
     setInterval(interval);
@@ -12,6 +12,8 @@ TrayTimer::TrayTimer(int interval, int postponeTime, QObject *parent) :
     env.insert("FONT", "-adobe-helvetica-bold-r-normal--34-240-100-100-p-182-iso8859-1");
     env.insert("DISPLAY", ":0");
     this->process.setProcessEnvironment(env);
+    mBreakTimeTimer.setSingleShot(true);
+    connect(&mBreakTimeTimer, SIGNAL(timeout()), this, SLOT(start()));
 }
 
 void TrayTimer::processFinished(int exitCode, QProcess::ExitStatus exitStatus) {
@@ -48,9 +50,8 @@ void TrayTimer::processStateChanged(QProcess::ProcessState newState) {
 }
 
 void TrayTimer::timerTimeout() {
-    qDebug() << "Timer timeout after " << interval() << " msec at " << QTime::currentTime().toString("hh:mm:ss");
+    qDebug() << "Break starts after " << convertToString(interval(), MILISECOND, MINUTE) << " minutes at " << QTime::currentTime().toString("hh:mm:ss");
     setInterval(mInterval);
-    qDebug() << "Start for "<< interval() << " msec";
 
     // display OSD
     QString program = "bash";
@@ -66,7 +67,7 @@ void TrayTimer::timerTimeout() {
         qDebug() << "Can not run another process before finished the previous one";
     }
 
-    start();
+    mBreakTimeTimer.start(mBreakTime);
 }
 
 void TrayTimer::killOsd() {
@@ -85,7 +86,7 @@ void TrayTimer::killOsd() {
 void TrayTimer::postpone() {
     qDebug() << "postpone()";
     stop();
-    start(mPostponeTime);
+    start(interval() - mStartTime.elapsed() + mPostponeTime);
 }
 
 void TrayTimer::stop() {
@@ -94,6 +95,7 @@ void TrayTimer::stop() {
 }
 
 void TrayTimer::start() {
+    qDebug() << "Break finished after " << convertToString(mBreakTimeTimer.interval(), MILISECOND, MINUTE) << " minutes at " << QTime::currentTime().toString("hh:mm:ss");
     mStartTime.start();
     QTimer::start();
 }
@@ -111,4 +113,44 @@ void TrayTimer::restart() {
     qDebug() << "restart()";
     stop();
     start(mInterval);
+}
+
+QString TrayTimer::convertToString(int value, TimeUnits from, TimeUnits to) {
+
+    const int PRECISION = 2;
+    // convert to miliseconds
+    double microSec = -1;
+    switch (from) {
+    case MICROSECOND:
+        microSec = value / 1000.0;
+    case MILISECOND:
+        // do nothing
+        break;
+    case SECOND:
+        value = value * 1000;
+        break;
+    case MINUTE:
+        value = value * 60 * 1000;
+        break;
+    case HOUR:
+        value = value * 60 * 60 * 1000;
+    default:
+        return QString::number(-1);
+    }
+
+
+    switch (to) {
+    case MICROSECOND:
+        return QString::number(microSec, 'G', PRECISION);
+    case MILISECOND:
+        return QString::number(value);
+    case SECOND:
+        return QString::number((value / 1000.0), 'G', PRECISION);
+    case MINUTE:
+        return QString::number((value / 1000.0 / 60.0), 'G', PRECISION);
+    case HOUR:
+        return QString::number((value / 1000.0 / 60.0 / 60.0), 'G', PRECISION);
+    }
+
+    return QString::number(-1);
 }

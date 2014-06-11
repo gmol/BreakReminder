@@ -10,7 +10,9 @@ class TrayTimer : public QTimer
 {
     Q_OBJECT
 public:
-    explicit TrayTimer(int interval = (60 * 60 * 1000), int postponeTime = (10 * 60 * 1000), QObject *parent = 0);
+    explicit TrayTimer(int interval = (60 * 60 * 1000), int breakTime = (5 * 60 * 1000), int postponeTime = (10 * 60 * 1000), QObject *parent = 0);
+
+    enum TimeUnits { MICROSECOND, MILISECOND, SECOND, MINUTE, HOUR };
 
 signals:
 
@@ -32,10 +34,15 @@ private slots:
 
 private:
     void killOsd();
+    QString convertToString(int value, TimeUnits from, TimeUnits to);
+
     const int mInterval;
+    const int mBreakTime;
     const int mPostponeTime;
+
     QProcess process;
     QTime mStartTime;
+    QTimer mBreakTimeTimer;
 };
 
 #endif // TRAYTIMER_H
