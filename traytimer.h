@@ -14,6 +14,8 @@ public:
 
     enum TimeUnits { MICROSECOND, MILISECOND, SECOND, MINUTE, HOUR };
 
+    static int toMiliSeconds(int time, TimeUnits unit);
+
 signals:
 
 public slots:

@@ -14,11 +14,21 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
     traytimer.cpp \
-    tray.cpp
+    tray.cpp \
+    isystemstatenotify.cpp \
+    systemidlemonitor.cpp \
+    systemidlemonitorimpl.cpp \
+    xpsystemidlemonitorimpl.cpp \
+    linuxsystemidlemonitorimpl.cpp
 
 HEADERS  += \
     traytimer.h \
-    tray.h
+    tray.h \
+    isystemstatenotify.h \
+    systemidlemonitor.h \
+    systemidlemonitorimpl.h \
+    xpsystemidlemonitorimpl.h \
+    linuxsystemidlemonitorimpl.h
 
 FORMS    +=
 

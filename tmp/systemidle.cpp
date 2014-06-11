@@ -114,7 +114,7 @@ pirvate:
 }
 
 
-class Implementator : public ISystemStateNotify {
+class SystemIdleMonitorImpl : public ISystemStateNotify {
 protected:
     bool mIdle;
     const int mIdleTime;
@@ -126,13 +126,13 @@ protected:
     
 }
 
-class XpImplementator : public Implementator {
+class XpImplementator : public SystemIdleMonitorImpl {
 friend class SystemIdleMonitor;
     private:
     XpImplementator() {
     }
 }
-class LinuxImplementator : public ISystemStateNotify {
+class LinuxImplementator : public SystemIdleMonitorImpl {
 friend class SystemIdleMonitor;
 private:
     LinuxImplementator() {

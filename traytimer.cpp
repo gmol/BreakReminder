@@ -138,7 +138,6 @@ QString TrayTimer::convertToString(int value, TimeUnits from, TimeUnits to) {
         return QString::number(-1);
     }
 
-
     switch (to) {
     case MICROSECOND:
         return QString::number(microSec, 'G', PRECISION);
@@ -153,4 +152,30 @@ QString TrayTimer::convertToString(int value, TimeUnits from, TimeUnits to) {
     }
 
     return QString::number(-1);
+}
+
+int TrayTimer::toMiliSeconds(int time, TimeUnits unit)
+{
+
+    switch(unit) {
+    case MICROSECOND:
+        time = time / 1000;
+        break;
+    case MILISECOND:
+        // do nothing
+        break;
+    case SECOND:
+        time = time * 1000;
+        break;
+    case MINUTE:
+        time = time * 1000 * 60;
+        break;
+    case HOUR:
+        time = time * 1000 * 60 * 60;
+        break;
+    default:
+        time = -1;
+        break;
+    }
+    return time;
 }
