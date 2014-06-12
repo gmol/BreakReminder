@@ -1,8 +1,9 @@
 #include "traytimer.h"
 #include <QTime>
+#include "systemidlemonitor.h"
 
 TrayTimer::TrayTimer(int interval, int breakTime, int postponeTime, QObject *parent) :
-    QTimer(parent),  mInterval(interval), mBreakTime(breakTime), mPostponeTime(postponeTime)
+    QTimer(parent), mInterval(interval), mBreakTime(breakTime), mPostponeTime(postponeTime), mIdleMonitor(this)
 {
     qDebug() << "TrayTimer: Interval set:" << interval << ", postpone time:" << postponeTime;
     setInterval(interval);
@@ -14,6 +15,8 @@ TrayTimer::TrayTimer(int interval, int breakTime, int postponeTime, QObject *par
     this->process.setProcessEnvironment(env);
     mBreakTimeTimer.setSingleShot(true);
     connect(&mBreakTimeTimer, SIGNAL(timeout()), this, SLOT(start()));
+
+
 }
 
 void TrayTimer::processFinished(int exitCode, QProcess::ExitStatus exitStatus) {

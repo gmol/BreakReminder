@@ -1,7 +1,7 @@
 #include "xpsystemidlemonitorimpl.h"
 
-XpSystemIdleMonitorImpl::XpSystemIdleMonitorImpl(int idleTime, QObject *parent) :
-    SystemIdleMonitorImpl(idleTime, parent)
+XpSystemIdleMonitorImpl::XpSystemIdleMonitorImpl(int idleTime, int monitoringInterval, QObject *parent) :
+    SystemIdleMonitorImpl(idleTime, monitoringInterval, parent)
 {
 }
 

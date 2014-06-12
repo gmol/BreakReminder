@@ -34,3 +34,6 @@ FORMS    +=
 
 RESOURCES += \
     BreakReminder.qrc
+
+LIBS += -lXss
+

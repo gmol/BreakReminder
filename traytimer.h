@@ -5,6 +5,7 @@
 #include <QTime>
 #include <QProcess>
 #include <QDebug>
+#include "systemidlemonitor.h"
 
 class TrayTimer : public QTimer
 {
@@ -45,6 +46,8 @@ private:
     QProcess process;
     QTime mStartTime;
     QTimer mBreakTimeTimer;
+    SystemIdleMonitor mIdleMonitor;
+
 };
 
 #endif // TRAYTIMER_H

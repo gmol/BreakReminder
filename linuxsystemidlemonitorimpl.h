@@ -10,7 +10,7 @@ class LinuxSystemIdleMonitorImpl : public SystemIdleMonitorImpl
     friend class SystemIdleMonitor;
 
 private:
-    explicit LinuxSystemIdleMonitorImpl(int idleTime, QObject *parent = 0);
+    explicit LinuxSystemIdleMonitorImpl(int idleTime, int monitoringInterval, QObject *parent = 0);
     
 signals:
     

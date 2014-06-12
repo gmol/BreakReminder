@@ -10,7 +10,7 @@ class XpSystemIdleMonitorImpl : public SystemIdleMonitorImpl
     friend class SystemIdleMonitor;
 
 private:
-    explicit XpSystemIdleMonitorImpl(int idleTime, QObject *parent = 0);
+    explicit XpSystemIdleMonitorImpl(int idleTime, int monitoringInterval, QObject *parent = 0);
     
 signals:
     
