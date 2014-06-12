@@ -46,7 +46,7 @@ private:
     QProcess process;
     QTime mStartTime;
     QTimer mBreakTimeTimer;
-    SystemIdleMonitor mIdleMonitor;
+    SystemIdleMonitor* mIdleMonitor;
 
 };
 

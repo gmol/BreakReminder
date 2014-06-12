@@ -3,8 +3,11 @@
 #include "systemidlemonitor.h"
 
 TrayTimer::TrayTimer(int interval, int breakTime, int postponeTime, QObject *parent) :
-    QTimer(parent), mInterval(interval), mBreakTime(breakTime), mPostponeTime(postponeTime), mIdleMonitor(this)
+    QTimer(parent), mInterval(interval), mBreakTime(breakTime), mPostponeTime(postponeTime)
 {
+    mIdleMonitor = new SystemIdleMonitor(this);
+    connect(mIdleMonitor, SIGNAL(notifyBusyAgain()), this, SLOT(restart()));
+
     qDebug() << "TrayTimer: Interval set:" << interval << ", postpone time:" << postponeTime;
     setInterval(interval);
     connect(this, SIGNAL(timeout()), this, SLOT(timerTimeout()));

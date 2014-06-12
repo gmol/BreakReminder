@@ -35,5 +35,7 @@ FORMS    +=
 RESOURCES += \
     BreakReminder.qrc
 
-LIBS += -lXss
+unix {
+    LIBS += -lXss
+}
 
