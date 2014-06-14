@@ -7,4 +7,6 @@ XpSystemIdleMonitorImpl::XpSystemIdleMonitorImpl(int idleTime, int monitoringInt
 
 void XpSystemIdleMonitorImpl::monitor()
 {
+    qWarning() << "Idle system monitoring is not implemented for Windows platform yet";
+
 }

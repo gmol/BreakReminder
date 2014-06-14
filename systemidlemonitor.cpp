@@ -1,15 +1,21 @@
 #include "systemidlemonitor.h"
 #include "linuxsystemidlemonitorimpl.h"
+#include "xpsystemidlemonitorimpl.h"
+#include "traytimer.h"
 
-SystemIdleMonitor::SystemIdleMonitor(QObject *parent) :
+IdleSystemMonitor::IdleSystemMonitor(int idleTime, int monitoringInterval, QObject *parent) :
     ISystemStateNotify(parent)
 {
-#ifdef Q_WS_X11
-    mImpl = new LinuxSystemIdleMonitorImpl(10000, 2000, this);
-#endif
+    qDebug() << "Idle time is set to " << TrayTimer::convertToString(idleTime, TrayTimer::MINUTE)
+             << ". Idle system monitoring is done every " << TrayTimer::convertToString(monitoringInterval, TrayTimer::MINUTE);
 
-#ifdef Q_WS_WIN
-    exit(1);
+    qDebug() << "Choose implementation of Idle System Monitor ...";
+#ifdef Q_WS_X11
+    qDebug() << "Linux implementation of Idle System Monitor";
+    mImpl = new LinuxSystemIdleMonitorImpl(idleTime, monitoringInterval, this);
+#else
+    qWarning() << "Windows platform is not supported at the moment";
+    mImpl = new XpSystemIdleMonitorImpl(idleTime, monitoringInterval, this);
 #endif
 
     connect(mImpl, SIGNAL(notifyBusyAgain()), this, SIGNAL(notifyBusyAgain()));

@@ -4,7 +4,6 @@
 #include <QObject>
 #include <QDebug>
 
-
 class ISystemStateNotify : public QObject
 {
     Q_OBJECT

@@ -16,6 +16,7 @@ public:
     enum TimeUnits { MICROSECOND, MILISECOND, SECOND, MINUTE, HOUR };
 
     static int toMiliSeconds(int time, TimeUnits unit);
+    static QString convertToString(int value, TimeUnits to, TimeUnits from=TrayTimer::MILISECOND);
 
 signals:
 
@@ -26,6 +27,7 @@ public slots:
     void processStarted();
     void processStateChanged(QProcess::ProcessState newState);
     void postpone();
+    void sooner();
     void stop();
     void start();
     void start(int msec);
@@ -37,7 +39,7 @@ private slots:
 
 private:
     void killOsd();
-    QString convertToString(int value, TimeUnits from, TimeUnits to);
+
 
     const int mInterval;
     const int mBreakTime;
@@ -46,7 +48,7 @@ private:
     QProcess process;
     QTime mStartTime;
     QTimer mBreakTimeTimer;
-    SystemIdleMonitor* mIdleMonitor;
+    IdleSystemMonitor* mIdleMonitor;
 
 };
 

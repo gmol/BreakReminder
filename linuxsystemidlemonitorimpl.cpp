@@ -1,4 +1,5 @@
 #include "linuxsystemidlemonitorimpl.h"
+#include <QTime>
 #include <X11/extensions/scrnsaver.h>
 
 
@@ -10,7 +11,7 @@ LinuxSystemIdleMonitorImpl::LinuxSystemIdleMonitorImpl(int idleTime, int monitor
 
 void LinuxSystemIdleMonitorImpl::monitor()
 {
-    qDebug() << "LinuxSystemIdleMonitorImpl::monitor()";
+    qDebug() << "LinuxSystemIdleMonitorImpl::monitor() at " << QTime::currentTime().toString("hh:mm:ss");
 
     Display *dpy = XOpenDisplay(0);
     if (!dpy) {
@@ -29,7 +30,7 @@ void LinuxSystemIdleMonitorImpl::monitor()
     XScreenSaverInfo *info = XScreenSaverAllocInfo();
     XScreenSaverQueryInfo(dpy, DefaultRootWindow(dpy), info);
 
-    printf("%u\n", (info->idle + 500) / 1000);
+    printf("%u\n", (int)((info->idle + 500) / 1000));
 
     if (info->idle > mIdleTime) {
         mIdle = true;

@@ -7,7 +7,7 @@ class XpSystemIdleMonitorImpl : public SystemIdleMonitorImpl
 {
     Q_OBJECT
 
-    friend class SystemIdleMonitor;
+    friend class IdleSystemMonitor;
 
 private:
     explicit XpSystemIdleMonitorImpl(int idleTime, int monitoringInterval, QObject *parent = 0);

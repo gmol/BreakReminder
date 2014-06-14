@@ -4,13 +4,12 @@
 #include "isystemstatenotify.h"
 #include "systemidlemonitorimpl.h"
 
-//mytodo IdleSystemMonitor should be a sigleton
-//mytodo change the name from SystemIdleMonitor for IdleSystemMonitor
-class SystemIdleMonitor : public ISystemStateNotify
+//mytodo IdleSystemMonitor could be a sigleton
+class IdleSystemMonitor : public ISystemStateNotify
 {
     Q_OBJECT
 public:
-    explicit SystemIdleMonitor(QObject *parent = 0);
+    explicit IdleSystemMonitor(int idleTime, int monitoringInterval, QObject *parent = 0);
     
 signals:
     

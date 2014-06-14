@@ -5,8 +5,12 @@ Tray::Tray(int interval, int postponeTime, QObject *parent) :
     QObject(parent), timer(interval, postponeTime)
 {
     trayIcon.setIcon(QIcon("://tray"));
-    postponeAction = new QAction(QIcon("://later"),"&Postpone", &trayIcon);
+    postponeAction = new QAction(QIcon("://later3"),"&Later", &trayIcon);
     postponeAction->setIconVisibleInMenu(true);
+
+    soonerAction = new QAction(QIcon("://sooner"),"&Sooner", &trayIcon);
+    soonerAction->setIconVisibleInMenu(true);
+
     quitAction = new QAction(QIcon("://quit"), "&Quit", &trayIcon);
     quitAction->setIconVisibleInMenu(true);
     restartAction = new QAction(QIcon("://restart"), "&Restart", &trayIcon);
@@ -14,12 +18,14 @@ Tray::Tray(int interval, int postponeTime, QObject *parent) :
     trayIconMenu = new QMenu();
     trayIconMenu->addAction(restartAction);
     trayIconMenu->addAction(postponeAction);
+    trayIconMenu->addAction(soonerAction);
     trayIconMenu->addAction(quitAction);
     trayIcon.setContextMenu(trayIconMenu);
 
     QObject::connect(quitAction, SIGNAL(triggered()), &timer, SLOT(stop()));
     QObject::connect(quitAction, SIGNAL(triggered()), this, SIGNAL(quit()));
     QObject::connect(postponeAction, SIGNAL(triggered()), &timer, SLOT(postpone()));
+    QObject::connect(soonerAction, SIGNAL(triggered()), &timer, SLOT(sooner()));
     QObject::connect(restartAction, SIGNAL(triggered()), &timer, SLOT(restart()));
     trayIcon.installEventFilter(this);
     trayIcon.show();

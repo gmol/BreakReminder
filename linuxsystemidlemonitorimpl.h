@@ -7,7 +7,7 @@ class LinuxSystemIdleMonitorImpl : public SystemIdleMonitorImpl
 {
     Q_OBJECT
 
-    friend class SystemIdleMonitor;
+    friend class IdleSystemMonitor;
 
 private:
     explicit LinuxSystemIdleMonitorImpl(int idleTime, int monitoringInterval, QObject *parent = 0);

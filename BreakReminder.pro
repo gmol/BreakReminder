@@ -18,8 +18,10 @@ SOURCES += main.cpp\
     isystemstatenotify.cpp \
     systemidlemonitor.cpp \
     systemidlemonitorimpl.cpp \
-    xpsystemidlemonitorimpl.cpp \
-    linuxsystemidlemonitorimpl.cpp
+    xpsystemidlemonitorimpl.cpp
+unix {
+    SOURCES += linuxsystemidlemonitorimpl.cpp
+}
 
 HEADERS  += \
     traytimer.h \
@@ -27,8 +29,10 @@ HEADERS  += \
     isystemstatenotify.h \
     systemidlemonitor.h \
     systemidlemonitorimpl.h \
-    xpsystemidlemonitorimpl.h \
-    linuxsystemidlemonitorimpl.h
+    xpsystemidlemonitorimpl.h
+unix {
+    HEADERS += linuxsystemidlemonitorimpl.h
+}
 
 FORMS    +=
 
@@ -38,4 +42,13 @@ RESOURCES += \
 unix {
     LIBS += -lXss
 }
+
+
+release: DESTDIR = build/release
+debug:   DESTDIR = build/debug
+
+OBJECTS_DIR = $$DESTDIR/obj
+MOC_DIR = $$DESTDIR/moc
+RCC_DIR = $$DESTDIR/qrc
+UI_DIR = $$DESTDIR/ui
 
