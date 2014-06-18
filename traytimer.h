@@ -11,9 +11,10 @@ class TrayTimer : public QTimer
 {
     Q_OBJECT
 public:
-    explicit TrayTimer(int interval = (60 * 60 * 1000), int breakTime = (5 * 60 * 1000), int postponeTime = (10 * 60 * 1000), QObject *parent = 0);
+    explicit TrayTimer(int interval = ONEHOUR, int breakTime = (5 * ONEMINUTE), int postponeTime = (10 * ONEMINUTE), QObject *parent = 0);
 
-    enum TimeUnits { MICROSECOND, MILISECOND, SECOND, MINUTE, HOUR };
+    enum TimeUnits { MILISECOND, SECOND, MINUTE, HOUR };
+    enum MilisecondValues { ONESECOND = (1000), ONEMINUTE = (1000 * 60), ONEHOUR = (1000 * 60 * 60) };
 
     static int toMiliSeconds(int time, TimeUnits unit);
     static QString convertToString(int value, TimeUnits to, TimeUnits from=TrayTimer::MILISECOND);

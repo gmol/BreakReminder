@@ -6,11 +6,11 @@ TrayTimer::TrayTimer(int interval, int breakTime, int postponeTime, QObject *par
     QTimer(parent), mInterval(interval), mBreakTime(breakTime), mPostponeTime(postponeTime)
 {
     // idle system monitor settins
-    mIdleMonitor = new IdleSystemMonitor(interval / 2, breakTime / 2, this);
+    mIdleMonitor = new IdleSystemMonitor(30 * ONEMINUTE, 1 * ONEMINUTE, this);
     connect(mIdleMonitor, SIGNAL(notifyBusyAgain()), this, SLOT(restart()));
 
     // main timer settings
-    qDebug() << "TrayTimer: Interval set:" << convertToString(interval, SECOND)  << ", postpone time:" << convertToString(postponeTime, SECOND);
+    qDebug() << "TrayTimer: Interval set:" << convertToString(interval, SECOND)  << ", postpone time:" << convertToString(postponeTime, SECOND) << " [s]";
     setSingleShot(true);
     setInterval(interval);
     connect(this, SIGNAL(timeout()), this, SLOT(timerTimeout()));
@@ -95,9 +95,12 @@ void TrayTimer::killOsd() {
 }
 
 void TrayTimer::postpone() {
-    qDebug() << "postpone()";
+    qDebug() << "postpone() at " << QTime::currentTime().toString("hh:mm:ss") ;
     stop();
-    start(interval() - mStartTime.elapsed() + mPostponeTime);
+
+    int msec = remainingTime() + mPostponeTime;
+    qDebug() << "next break in " << convertToString(msec, MINUTE);
+    start(msec);
 }
 
 void TrayTimer::sooner() {
@@ -136,34 +139,30 @@ QString TrayTimer::convertToString(int value, TimeUnits to, TimeUnits from) {
     // convert to miliseconds
     double microSec = -1;
     switch (from) {
-    case MICROSECOND:
-        microSec = value / 1000.0;
     case MILISECOND:
         // do nothing
         break;
     case SECOND:
-        value = value * 1000;
+        value = value * ONESECOND;
         break;
     case MINUTE:
-        value = value * 60 * 1000;
+        value = value * ONEMINUTE;
         break;
     case HOUR:
-        value = value * 60 * 60 * 1000;
+        value = value * ONEHOUR;
     default:
         return QString::number(-1);
     }
 
     switch (to) {
-    case MICROSECOND:
-        return QString::number(microSec, 'g', PRECISION);
     case MILISECOND:
         return QString::number(value);
     case SECOND:
-        return QString::number((value / 1000.0), 'g', PRECISION);
+        return QString::number((value / ONESECOND), 'g', PRECISION);
     case MINUTE:
-        return QString::number((value / 1000.0 / 60.0), 'g', PRECISION);
+        return QString::number((value / ONEMINUTE), 'g', PRECISION);
     case HOUR:
-        return QString::number((value / 1000.0 / 60.0 / 60.0), 'g', PRECISION);
+        return QString::number((value / ONEHOUR), 'g', PRECISION);
     }
 
     return QString::number(-1);
@@ -172,21 +171,18 @@ QString TrayTimer::convertToString(int value, TimeUnits to, TimeUnits from) {
 int TrayTimer::toMiliSeconds(int time, TimeUnits unit)
 {
 
-    switch(unit) {
-    case MICROSECOND:
-        time = time / 1000;
-        break;
+    switch(unit) {    
     case MILISECOND:
         // do nothing
         break;
     case SECOND:
-        time = time * 1000;
+        time = time * ONESECOND;
         break;
     case MINUTE:
-        time = time * 1000 * 60;
+        time = time * ONEMINUTE;
         break;
     case HOUR:
-        time = time * 1000 * 60 * 60;
+        time = time * ONEHOUR;
         break;
     default:
         time = -1;

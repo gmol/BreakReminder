@@ -1,19 +1,18 @@
 #include "linuxsystemidlemonitorimpl.h"
 #include <QTime>
 #include <X11/extensions/scrnsaver.h>
-
+#include "traytimer.h"
 
 LinuxSystemIdleMonitorImpl::LinuxSystemIdleMonitorImpl(int idleTime, int monitoringInterval, QObject *parent) :
     SystemIdleMonitorImpl(idleTime, monitoringInterval, parent)
 {
+    dpy = XOpenDisplay(0);
 }
 
 
 void LinuxSystemIdleMonitorImpl::monitor()
 {
-    qDebug() << "LinuxSystemIdleMonitorImpl::monitor() at " << QTime::currentTime().toString("hh:mm:ss");
 
-    Display *dpy = XOpenDisplay(0);
     if (!dpy) {
         mIdle = false;
     }
@@ -30,7 +29,7 @@ void LinuxSystemIdleMonitorImpl::monitor()
     XScreenSaverInfo *info = XScreenSaverAllocInfo();
     XScreenSaverQueryInfo(dpy, DefaultRootWindow(dpy), info);
 
-    printf("%u\n", (int)((info->idle + 500) / 1000));
+    qDebug() << "LinuxSystemIdleMonitorImpl::monitor() at" << QTime::currentTime().toString("hh:mm:ss") << ". System was idle for " << ((info->idle + 500) / TrayTimer::ONESECOND) << " seconds";
 
     if (info->idle > mIdleTime) {
         mIdle = true;
