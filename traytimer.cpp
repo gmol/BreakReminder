@@ -97,9 +97,9 @@ void TrayTimer::killOsd() {
 void TrayTimer::postpone() {
     qDebug() << "postpone() at " << QTime::currentTime().toString("hh:mm:ss") ;
     stop();
-
-    int msec = remainingTime() + mPostponeTime;
-    qDebug() << "next break in " << convertToString(msec, MINUTE);
+    int remainingtime = remainingTime();
+    int msec = remainingtime + mPostponeTime;
+    qDebug() << "Remaining time " << convertToString(remainingtime, MINUTE) << "minutes. Next break in" << convertToString(msec, MINUTE) << "minutes";
     start(msec);
 }
 
@@ -137,7 +137,6 @@ QString TrayTimer::convertToString(int value, TimeUnits to, TimeUnits from) {
 
     const int PRECISION = 6;
     // convert to miliseconds
-    double microSec = -1;
     switch (from) {
     case MILISECOND:
         // do nothing

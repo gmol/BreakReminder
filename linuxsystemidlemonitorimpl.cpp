@@ -29,7 +29,7 @@ void LinuxSystemIdleMonitorImpl::monitor()
     XScreenSaverInfo *info = XScreenSaverAllocInfo();
     XScreenSaverQueryInfo(dpy, DefaultRootWindow(dpy), info);
 
-    qDebug() << "LinuxSystemIdleMonitorImpl::monitor() at" << QTime::currentTime().toString("hh:mm:ss") << ". System was idle for " << ((info->idle + 500) / TrayTimer::ONESECOND) << " seconds";
+    qDebug() << "LinuxSystemIdleMonitorImpl::monitor() at" << QTime::currentTime().toString("hh:mm:ss") << ". System was idle for" << ((info->idle + 500) / TrayTimer::ONESECOND) << "seconds";
 
     if (info->idle > mIdleTime) {
         mIdle = true;
