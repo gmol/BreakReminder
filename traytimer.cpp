@@ -128,7 +128,7 @@ int TrayTimer::remainingTime() const {
 }
 
 void TrayTimer::restart() {
-    qDebug() << "restart()";
+    qDebug() << "restart(). Interval:" << convertToString(mBreakTimeTimer.interval(), MINUTE) << ". Remaining time:" << convertToString(remainingTime(), MINUTE);
     stop();
     start(mInterval);
 }
