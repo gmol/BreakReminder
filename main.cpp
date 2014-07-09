@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
         QMessageBox::critical(0, QObject::tr("Systray"),
                               QObject::tr("I couldn't detect any system tray "
                                           "on this system."));
-        return 1;
+//        return 1;
     }
 
     QStringList args = a.arguments();

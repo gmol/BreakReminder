@@ -23,8 +23,6 @@ TrayTimer::TrayTimer(int interval, int breakTime, int postponeTime, QObject *par
     // breakTime timer settings
     mBreakTimeTimer.setSingleShot(true);
     connect(&mBreakTimeTimer, SIGNAL(timeout()), this, SLOT(start()));
-
-
 }
 
 void TrayTimer::processFinished(int exitCode, QProcess::ExitStatus exitStatus) {
@@ -79,6 +77,7 @@ void TrayTimer::timerTimeout() {
     }
 
     mBreakTimeTimer.start(mBreakTime);
+    mStartTime.start();
 }
 
 void TrayTimer::killOsd() {
@@ -94,17 +93,29 @@ void TrayTimer::killOsd() {
         qDebug() << "pkill output:" << p.readAll();
 }
 
-void TrayTimer::postpone() {
-    qDebug() << "postpone() at " << QTime::currentTime().toString("hh:mm:ss") ;
+void TrayTimer::later() {
+    qDebug() << "later() at " << QTime::currentTime().toString("hh:mm:ss") ;
     stop();
     int remainingtime = remainingTime();
     int msec = remainingtime + mPostponeTime;
-    qDebug() << "Remaining time " << convertToString(remainingtime, MINUTE) << "minutes. Next break in" << convertToString(msec, MINUTE) << "minutes";
+    qDebug() << "Remaining time " << convertToString(remainingtime, MINUTE) << "minutes. Next break in later in" << convertToString(msec, MINUTE) << "minutes";
     start(msec);
 }
 
 void TrayTimer::sooner() {
+    qDebug() << "sooner() at " << QTime::currentTime().toString("hh:mm:ss") ;
+    stop();
+    int remainingtime = remainingTime();
+    int msec = 0;
 
+    if (remainingtime < (10 * ONEMINUTE)) {
+        qDebug() << "The next break will be sooner than in 10 minutes";
+        msec = remainingtime / 2;
+    } else {
+        msec = remainingtime - mPostponeTime;
+    }
+    qDebug() << "Remaining time " << convertToString(remainingtime, MINUTE) << "minutes. Next break will be sooner in" << convertToString(msec, MINUTE) << "minutes";
+    start(msec);
 }
 
 void TrayTimer::stop() {
@@ -124,13 +135,24 @@ void TrayTimer::start(int msec) {
 }
 
 int TrayTimer::remainingTime() const {
-    return interval() - mStartTime.elapsed() + 1;
+
+    if (isActive()) {
+        // work time
+        return interval() - mStartTime.elapsed() + 1;
+    } else {
+        // break time
+        return mBreakTimeTimer.interval() - mStartTime.elapsed() + 1;
+    }
 }
 
 void TrayTimer::restart() {
     qDebug() << "restart(). Interval:" << convertToString(mBreakTimeTimer.interval(), MINUTE) << ". Remaining time:" << convertToString(remainingTime(), MINUTE);
     stop();
     start(mInterval);
+}
+
+bool TrayTimer::isWorkTime() {
+    return isActive();
 }
 
 QString TrayTimer::convertToString(int value, TimeUnits to, TimeUnits from) {

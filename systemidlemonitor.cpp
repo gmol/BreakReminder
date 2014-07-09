@@ -18,6 +18,6 @@ IdleSystemMonitor::IdleSystemMonitor(int idleTime, int monitoringInterval, QObje
     mImpl = new XpSystemIdleMonitorImpl(idleTime, monitoringInterval, this);
 #endif
 
-    connect(mImpl, SIGNAL(notifyBusyAgain()), this, SIGNAL(notifyBusyAgain()));
+    connect(mImpl, SIGNAL(notifyUserIsBack()), this, SIGNAL(notifyUserIsBack()));
     connect(mImpl, SIGNAL(notifyIdle()), this, SIGNAL(notifyIdle()));
 }

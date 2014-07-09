@@ -34,14 +34,13 @@ void LinuxSystemIdleMonitorImpl::monitor()
     if (info->idle > mIdleTime) {
         mIdle = true;
         qDebug() << "System is idle";
-
     }
 
     if (mIdle) {
         if (info->idle < mIdleTime) {
             mIdle = false;
             qDebug() << "User is back";
-            emit notifyBusyAgain();
+            emit notifyUserIsBack();
         }
     }
 

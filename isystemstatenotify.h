@@ -13,7 +13,7 @@ public:
     
 signals:
     void notifyIdle();
-    void notifyBusyAgain();
+    void notifyUserIsBack();
     
 public slots:
 protected:

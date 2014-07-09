@@ -18,6 +18,7 @@ public:
 
     static int toMiliSeconds(int time, TimeUnits unit);
     static QString convertToString(int value, TimeUnits to, TimeUnits from=TrayTimer::MILISECOND);
+    bool isWorkTime();
 
 signals:
 
@@ -27,7 +28,7 @@ public slots:
     void processReadyReadStandardOutput();
     void processStarted();
     void processStateChanged(QProcess::ProcessState newState);
-    void postpone();
+    void later();
     void sooner();
     void stop();
     void start();

@@ -16,7 +16,7 @@ public slots:
     virtual void monitor() = 0;
 
 protected:
-    const int mIdleTime;
+    const unsigned long mIdleTime;
 private:
     QTimer mTimer;
 

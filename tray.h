@@ -27,7 +27,7 @@ protected:
 
 private:
     QSystemTrayIcon trayIcon;
-    QAction* postponeAction;
+    QAction* laterAction;
     QAction* soonerAction;
     QAction* restartAction;
     QAction* quitAction;
