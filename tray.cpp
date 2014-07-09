@@ -24,7 +24,7 @@ Tray::Tray(int interval, int postponeTime, QObject *parent) :
 
     QObject::connect(quitAction, SIGNAL(triggered()), &timer, SLOT(stop()));
     QObject::connect(quitAction, SIGNAL(triggered()), this, SIGNAL(quit()));
-    QObject::connect(laterAction, SIGNAL(triggered()), &timer, SLOT(postpone()));
+    QObject::connect(laterAction, SIGNAL(triggered()), &timer, SLOT(later()));
     QObject::connect(soonerAction, SIGNAL(triggered()), &timer, SLOT(sooner()));
     QObject::connect(restartAction, SIGNAL(triggered()), &timer, SLOT(restart()));
     trayIcon.installEventFilter(this);
