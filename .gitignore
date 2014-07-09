@@ -4,6 +4,9 @@ build/
 # Make file
 Makefile
 
+# QtCreator files
+BreakReminder.pro.user
+
 # Compiled Object files
 *.slo
 *.lo
